@@ -30,6 +30,12 @@ def main():
     model = os.environ.get('OPENAI_MODEL', 'gpt-4-mini')
     functions_available = are_functions_available(model=model)
     max_tokens_default = default_max_tokens(model=model)
+
+    # Ensure max_tokens_default is not None
+    if max_tokens_default is None:
+        logging.warning("default_max_tokens returned None. Using a fallback value of 2048.")
+        max_tokens_default = 2048
+
     openai_config = {
         'api_key': os.environ['OPENAI_API_KEY'],
         'show_usage': os.environ.get('SHOW_USAGE', 'false').lower() == 'true',
